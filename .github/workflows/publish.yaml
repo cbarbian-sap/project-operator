@@ -31,7 +31,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up Docker Buildx
+    - name: Setup Docker Buildx
       uses: docker/setup-buildx-action@v2
 
     - name: Log in to the Container registry
@@ -42,7 +42,7 @@ jobs:
         password: ${{ github.token }}
 
     - name: Extract metadata (tags, labels) for Docker
-      id: meta
+      id: extract-metadata
       uses: docker/metadata-action@v4
       with:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
@@ -61,8 +61,8 @@ jobs:
           type=gha,scope=sha-${{ github.sha }},mode=max
           type=gha,scope=${{ github.ref_name }},mode=max
         push: true
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
+        tags: ${{ steps.extract-metadata.outputs.tags }}
+        labels: ${{ steps.extract-metadata.outputs.labels }}
 
   publish-crds:
     name: Publish CRD image
