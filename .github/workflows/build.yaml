@@ -183,3 +183,4 @@ jobs:
       with: 
         name: build
         status: ${{ steps.determine-status.outputs.status }}
+        description: ${{ github.workflow }} / Overall status
