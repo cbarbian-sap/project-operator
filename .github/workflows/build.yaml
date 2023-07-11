@@ -118,6 +118,7 @@ jobs:
 
     - name: Run tests
       run: |
+        sleep 30
         exit 1
         make envtest
         KUBEBUILDER_ASSETS=$(pwd)/bin/k8s/current E2E_ENABLED=${{ github.event_name == 'push' }} go test -count 1 ./...
