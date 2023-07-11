@@ -9,7 +9,7 @@ on:
     branches:
     - main
 
-concurrency: build
+# note: we do not use any concurrency here, in order to avoid queued workflows being cancelled by higher priority workflows
 
 env:
   REGISTRY: ghcr.io
@@ -161,28 +161,3 @@ jobs:
         push: false
         tags: ${{ steps.extract-metadata.outputs.tags }}
         labels: ${{ steps.extract-metadata.outputs.labels }}
-
-  # update-status:
-  #   name: Update commit status
-  #   runs-on: ubuntu-22.04
-  #   needs: build-docker
-  #   if: always() && github.event_name == 'push'
-  #   permissions:
-  #     statuses: write
-
-  #   steps:
-  #   - name: Determine commit status
-  #     id: determine-status
-  #     run: |
-  #       if [ "${{ needs.build-docker.result }}" == success ]; then
-  #         echo "status=success" >> $GITHUB_OUTPUT
-  #       else
-  #         echo "status=failure" >> $GITHUB_OUTPUT
-  #       fi
-
-  #   - name: Update commit status
-  #     uses: ouzi-dev/commit-status-updater@v2
-  #     with: 
-  #       name: build
-  #       status: ${{ steps.determine-status.outputs.status }}
-  #       description: ${{ github.workflow }} / Overall status
