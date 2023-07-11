@@ -32,7 +32,6 @@ Dockerfile.cross
 # temp stuff
 /tmp
 
-
 # local stuff
 /.kubeconfig
 /.local/ssl
