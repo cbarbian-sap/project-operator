@@ -129,6 +129,10 @@ jobs:
       contents: read
     env:
       IMAGE_NAME: ${{ github.repository }}
+    outputs:
+      image-archive: image.tar
+      image-repository: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      image-tag: ${{ steps.extract-metadata.outputs.version }}
 
     steps:
     - name: Checkout repository
@@ -156,6 +160,13 @@ jobs:
         cache-to: |
           type=gha,scope=sha-${{ github.sha }},mode=max
           type=gha,scope=${{ github.ref_name }},mode=max
-        push: false
+        outputs: |
+          type=oci,dest=${{ runner.temp }}/image.tar
         tags: ${{ steps.extract-metadata.outputs.tags }}
         labels: ${{ steps.extract-metadata.outputs.labels }}
+
+    - name: Upload Docker image archive
+      uses: actions/upload-artifact@v3
+      with:
+        name: image.tar
+        path: ${{ runner.temp }}/image.tar
