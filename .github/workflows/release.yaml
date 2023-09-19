@@ -18,8 +18,10 @@ on:
         default: ''
 
   schedule:
-  - cron: '10 7 * * 1'
-  - cron: '10 8 * * 1'
+  - cron: '45 20 * * *'
+  - cron: '47 20 * * *'
+  #- cron: '10 7 * * 1'
+  #- cron: '10 8 * * 1'
 
 concurrency: trigger-release
 
